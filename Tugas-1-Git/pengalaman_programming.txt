@@ -1,0 +1,33 @@
+Work EXPERIENCE :
+
+Juni - September 2019	CV Regency
+______________________________________________________________
+Roles:
+➔	Admin E-Commerce,  IT Consultan, Develop WEB ( Larravel, CI, Wordpress )
+
+
+	
+Januari 2020 - April 2020	PT. SiCepat Ekspres Indonesia
+______________________________________________________________
+Roles: 
+➔	Admin Database Warehouse	
+	
+Agustus 2020 
+	PT. Gunung Amal Solution International ( Mitra Telkom ) 
+______________________________________________________________
+Roles: ( Sysadmin + Fullstack Developer )
+➔	Web Developer NodeJS for IDC Front-End.
+➔	Rest-API Developer for IDC App
+➔	Database Neo4j Developer for IDC App
+
+➔	Setup Neo4j Causal Cluster For Dev UIMAX App
+
+➔	Develop Redis Cluster Mode on Amal Server & Docker
+➔	Develop Elastic Search Cluster Mode Amal Server
+➔	Develop Neo4j Cluster Mode Amal Server 
+➔	Automate Rollover With ILM (ElasticSearch)  on Amal Server
+➔	Develop Minio Server, Clients & Console on Amal Server
+➔	Monitoring Server
+	Front End Developer On wifi.nome.telkom.co.id
+
+
