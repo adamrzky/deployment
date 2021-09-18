@@ -54,6 +54,17 @@
    <br><br>
 
    <table border=1> 
+    <tr>
+      <th colspan="1">
+      Photo  
+      </th>
+      <th colspan="1">
+          Data
+      </th>
+      <th colspan="1">
+          Action 
+      </th>
+    </tr>
     <tr v-for="blog of blogs">
         <td>
           <img width=100 :src="blog.photo ? domain + blog.photo : 'https://dummyimage.com/16:9x1080'" alt="">
