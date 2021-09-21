@@ -1,18 +1,23 @@
 <template>
+  <!-- App.vue -->
   <v-app>
+
+    <alert/>
+    <Dialog />
+
     <v-navigation-drawer app v-model="drawer">
       <v-list>
         <v-list-item v-if="!guest">
           <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/men/74.jpg"></v-img>
+            <v-img :src="user.photo_profile ? apiDomain + user.photo_profile : 'https://randomuser.me/api/portraits/men/70.jpg'"></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>Puji Adam Ricky Vadillah Sutaryat</v-list-item-title>
+            <v-list-item-title>{{ user.name }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
         <div class="pa-2" v-if="guest">
-          <v-btn block color="primary" class="mb-1">
+          <v-btn block color="primary" class="mb-1" @click="login">
             <v-icon left>mdi-lock</v-icon>
             Login
           </v-btn>
@@ -21,14 +26,9 @@
             Register
           </v-btn>
         </div>
-
         <v-divider></v-divider>
 
-        <v-list-item
-          v-for="(item, index) in menus"
-          :key="`menu-${index}`"
-          :to="item.route"
-        >
+        <v-list-item v-for="(item, index) in menus" :key="`menu-${index}`" :to="item.route">
           <v-list-item-icon>
             <v-icon left>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -37,10 +37,11 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
       </v-list>
       <template v-slot:append v-if="!guest">
         <div class="pa-2">
-          <v-btn block color="red" dark>
+          <v-btn block color="red" dark @click="logout">
             <v-icon left>mdi-lock</v-icon>
             Logout
           </v-btn>
@@ -51,11 +52,10 @@
     <v-app-bar app color="success" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Sanbercode</v-toolbar-title>
+      <v-toolbar-title>SanberCodeApp</v-toolbar-title>
 
-      <!-- pemisah konten -->
+      <!-- Pemisah konten -->
       <v-spacer></v-spacer>
-
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
@@ -68,23 +68,81 @@
     </v-main>
 
     <v-footer app>
-      @Sanbercode | VueJS 
+      &copy; 2021 Vuetify by SanberCodeApp
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'App',
-
+  components: { 
+    Alert: () => import('./components/Alert.vue'),
+    Dialog: () => import('./components/Dialog.vue'),
+  },
   data: () => ({
     drawer: false,
     menus: [
-      {title: 'Home', icon: 'mdi-home', route: '/'},
-      {title: 'Blogs', icon: 'mdi-note', route: '/blogs'},
+      { title: 'Home', icon: 'mdi-home', route: '/'},
+      { title: 'Blogs', icon: 'mdi-note', route: '/blogs'},
     ],
-    guest: true
+    apiDomain: 'https://demo-api-vue.sanbercloud.com',
   }),
+  computed: {
+    ...mapGetters({
+      guest: 'auth/guest',
+      user: 'auth/user',
+      token: 'auth/token'
+    })
+  },
+  methods: {
+    ...mapMutations({
+      'setToken': 'auth/setToken',
+      'setUser': 'auth/setUser'
+    }),
+    logout(){
+      const config = {
+        method: 'post',
+        url: this.apiDomain + '/api/v2/auth/logout',
+        headers: {
+          'Authorization': 'Bearer ' + this.token
+        }
+      }
+
+      this.axios(config)
+       .then(() => {
+         this.setToken('')
+         this.setUser({})
+
+         this.setAlert({
+           status: true,
+           color: 'success',
+           text: 'Anda berhasil logout',
+         })
+       })
+       .catch(responses => {
+         this.setAlert({
+           status: true,
+           color: 'success',
+           text: responses.data.error,
+         })
+       })
+    },
+    login(){
+      this.setDialogComponent({'component' : 'login'})
+    },
+    ...mapActions({
+      setAlert: 'alert/set',
+      setDialogComponent: 'dialog/setComponent',
+      checkToken: 'auth/checkToken'
+    }),
+  },
+  mounted(){
+    if(this.token){
+      this.checkToken(this.token)
+    }
+  }
 };
 </script>

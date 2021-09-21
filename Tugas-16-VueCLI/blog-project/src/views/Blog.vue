@@ -1,8 +1,8 @@
 <template>
     <div>
         <v-card v-if="blog.id">
-            <v-img :src="blog.photo ? apiDomain + blog.photo : 'https://picsum.photos/200/400'" class="white-text" height="200px">
-                <v-card-title class="fill-height align end" v-text="blog.title"></v-card-title>
+            <v-img :src="blog.photo ? apiDomain + blog.photo : 'https://dummyimage.com/1024'" class="white--text" height="200px">
+                <v-card-title class="fill-height align-end" v-text="blog.title"></v-card-title>
             </v-img>
 
             <v-card-text>
@@ -25,31 +25,34 @@
 
 <script>
 export default {
-    data: () => ({
-        blog: {},
-        apiDomain: 'https://demo-api-vue.sanbercloud.com',
-    }),
-    methods:{
-        go(){
-            let { id } = this.$route.params;
+  data: () => ({
+    apiDomain: 'https://demo-api-vue.sanbercloud.com/',
+    blog: {},
+  }),
 
-            const config = {
-                method: "get",
-                url: `${this.apiDomain}/api/v2/blog/${id}`
-            };
+  methods: {
+      go(){
+          let { id } = this.$route.params;
 
-            this.axios(config)
-                .then(response => {
-                    let { blog } = response.data
-                    this.blog = blog
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        }
-    },
-    created(){
-        this.go()
-    }
-};
+          const config = {
+              method: 'get',
+              url: `${this.apiDomain}api/v2/blog/${id}`
+          }
+
+          this.axios(config)
+           .then(response => {
+               let { blog } = response.data;
+               console.log(blog.photo)
+               this.blog = blog;
+               console.log(this.blog)
+           })
+           .catch(error => {
+               console.log(error);
+           })
+      }
+  },
+  created(){
+      this.go();
+  }
+}
 </script>
